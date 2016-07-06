@@ -26,7 +26,8 @@
     <string name="search_hint">输入关键词以搜索</string>
     <string name="no_result_found">抱歉，未找到相应结果</string>
     <string name="searching">搜索中，请稍候…</string>
-    <string name="action_share_url">分享</string>
+    <string name="action_delete_url">删除</string>
+    <string name="action_download_url">下载</string>
     <string name="share_to">分享至…</string>
     <string name="accelerate_server_unlock">加速服务器已解锁</string>
     <string name="share_this_news">分享这个新闻</string>

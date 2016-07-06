@@ -5,15 +5,15 @@ package android.fancy.reader.bean;
  */
 public class Book {
     private String bookName;
-    private String iconUrl;
+    private String icoUrl;
     private String bookUrl;
     private String author;
     private String description;
 
 
-    public Book(String bookName, String iconUrl, String bookUrl, String author, String description) {
+    public Book(String bookName, String icoUrl, String bookUrl, String author, String description) {
         this.bookName = bookName;
-        this.iconUrl = iconUrl;
+        this.icoUrl = icoUrl;
         this.bookUrl = bookUrl;
         this.author = author;
         this.description = description;
@@ -27,12 +27,12 @@ public class Book {
         this.bookName = bookName;
     }
 
-    public String getIconUrl() {
-        return iconUrl;
+    public String getIcoUrl() {
+        return icoUrl;
     }
 
-    public void setIconUrl(String iconUrl) {
-        this.iconUrl = iconUrl;
+    public void setIcoUrl(String icoUrl) {
+        this.icoUrl = icoUrl;
     }
 
     public String getBookUrl() {

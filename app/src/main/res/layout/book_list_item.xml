@@ -19,15 +19,15 @@
             android:contentDescription="@string/news_preview_image"/>
 
         <TextView
-            android:id="@+id/question_title"
+            android:id="@+id/book_name"
             style="@style/cardQuestionTitleStyle"/>
 
         <TextView
-            android:id="@+id/daily_title"
+            android:id="@+id/description"
             style="@style/baseCardTextStyle"/>
 
         <ImageView
-            android:id="@+id/card_share_overflow"
+            android:id="@+id/card_option_overflow"
             android:contentDescription="@string/share_this_news"
             style="@style/cardOverflowIconStyle"/>
     </RelativeLayout>
