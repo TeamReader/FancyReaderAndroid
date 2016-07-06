@@ -22,7 +22,7 @@
         android:id="@+id/main_pager"
         style="@style/mainPagerStyle"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".ui.activity.MainActivity"/>
+        tools:context=".activity.MainActivity"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_pick_date"
