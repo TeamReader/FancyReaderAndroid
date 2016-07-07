@@ -3,6 +3,7 @@ package android.fancy.reader;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.fancy.reader.DataSource.BookDataSource;
 import android.preference.PreferenceManager;
 
 import com.litesuits.orm.LiteOrm;
@@ -11,12 +12,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
+
 /**
  * Created by inx95 on 16-7-5.
  */
 public class FancyReaderApplication extends Application {
     private static FancyReaderApplication applicationContext;
     private static LiteOrm liteOrm;
+    private static BookDataSource bookDataSource;
 
     public static void initDB(Context context) {
         liteOrm = LiteOrm.newCascadeInstance(context, "fancy_reader.db");
@@ -41,12 +44,17 @@ public class FancyReaderApplication extends Application {
         return liteOrm;
     }
 
+    public static BookDataSource getBookDataSource() {
+        return bookDataSource;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         applicationContext = this;
         initImageLoader(getApplicationContext());
         initDB(getApplicationContext());
+        bookDataSource = new BookDataSource(getApplicationContext());
     }
 
     public static SharedPreferences getSharedPreferences() {

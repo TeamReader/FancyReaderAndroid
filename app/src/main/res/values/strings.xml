@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FancyReaderAndroid</string>
+    <string name="network_error">Network Error</string>
 </resources>

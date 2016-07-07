@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by inx95 on 16-7-6.
  */
-public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.CardViewHolder> {
+public class BookAdapter extends RecyclerView.Adapter<BookAdapter.CardViewHolder> {
 
     private boolean mIsNative;
     private List<Book> bookList;
@@ -43,8 +43,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.CardViewHold
             .build();
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
-    public BooksAdapter(boolean isDownloaded, List<Book> bookList) {
-        this.mIsNative = isDownloaded;
+    public BookAdapter(boolean isNative, List<Book> bookList) {
+        this.mIsNative = isNative;
         this.bookList = bookList;
         setHasStableIds(true);
     }

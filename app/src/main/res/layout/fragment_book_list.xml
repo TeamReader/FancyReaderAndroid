@@ -9,7 +9,7 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/news_list"
+            android:id="@+id/book_list"
             style="@style/commonListViewStyle"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>
