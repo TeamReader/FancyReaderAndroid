@@ -24,6 +24,8 @@
 
         <TextView
             android:id="@+id/description"
+            android:maxLength="35"
+            android:ellipsize="end"
             style="@style/baseCardTextStyle"/>
 
         <ImageView
