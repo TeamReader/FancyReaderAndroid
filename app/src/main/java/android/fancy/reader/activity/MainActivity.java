@@ -2,7 +2,7 @@ package android.fancy.reader.activity;
 
 import android.content.Intent;
 import android.fancy.reader.R;
-import android.fancy.reader.Tool.Constants;
+import android.fancy.reader.tool.Constants;
 import android.fancy.reader.fragment.BookListFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

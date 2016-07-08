@@ -1,4 +1,4 @@
-package android.fancy.reader.Tool;
+package android.fancy.reader.tool;
 
 /**
  * Created by inx95 on 16-7-7.

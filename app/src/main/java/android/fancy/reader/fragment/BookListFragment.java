@@ -1,7 +1,7 @@
 package android.fancy.reader.fragment;
 
 import android.fancy.reader.R;
-import android.fancy.reader.Tool.Constants;
+import android.fancy.reader.tool.Constants;
 import android.fancy.reader.activity.BaseActivity;
 import android.fancy.reader.adapter.BookAdapter;
 import android.fancy.reader.bean.Book;

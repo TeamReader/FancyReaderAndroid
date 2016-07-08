@@ -1,13 +1,31 @@
 package android.fancy.reader.bean;
 
+import com.litesuits.orm.db.annotation.Column;
+import com.litesuits.orm.db.annotation.PrimaryKey;
+import com.litesuits.orm.db.annotation.Table;
+import com.litesuits.orm.db.enums.AssignType;
+
 /**
  * Created by inx95 on 16-7-6.
  */
+@Table("book")
+
 public class Book {
+
+    @Column("bookName")
+    @PrimaryKey(AssignType.BY_MYSELF)
     private String bookName;
+
+    @Column("icoUrl")
     private String icoUrl;
+
+    @Column("bookUrl")
     private String bookUrl;
+
+    @Column(("author"))
     private String author;
+
+    @Column("description")
     private String description;
 
 
