@@ -1,10 +1,12 @@
 package android.fancy.reader.activity;
 
 import android.content.Intent;
+import android.fancy.reader.FancyReaderApplication;
 import android.fancy.reader.R;
 import android.fancy.reader.tool.Constants;
 import android.fancy.reader.fragment.BookListFragment;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -12,6 +14,11 @@ import android.support.v4.view.ViewPager;
 import android.support.design.widget.TabLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import observable.entity.TResult;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity {
 
@@ -46,10 +53,34 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        String a = "";
         switch (item.getItemId()) {
             case R.id.action_settings:
 //          todo       return prepareIntent(PrefsActivity.class);
             case R.id.action_go_to_search:
+
+                FancyReaderApplication.getApiService().login("inx", "inx")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<TResult<Boolean>>() {
+                            @Override
+                            public void onCompleted() {
+//                                Snackbar.make(mToolBar,"completed",Snackbar.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Snackbar.make(mToolBar,e.getMessage(),Snackbar.LENGTH_LONG).show();
+
+                            }
+
+                            @Override
+                            public void onNext(TResult<Boolean> booleanTResult) {
+                                Snackbar.make(mToolBar,booleanTResult.getResult().toString(),Snackbar.LENGTH_LONG).show();
+                            }
+                        });
+
+
 //          todo       return prepareIntent(SearchActivity.class);
         }
         return super.onOptionsItemSelected(item);
