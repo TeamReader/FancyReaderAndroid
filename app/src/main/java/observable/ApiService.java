@@ -20,7 +20,7 @@ public interface ApiService {
     Observable<TResult<Boolean>> login(@Query("userName") String userName, @Query("password") String password);
 
     @GET("userRegist")
-    Observable<TResult<Boolean>> regist(@Query("userName") String userName, @Query("password") String password);
+    Observable<TResult<Boolean>> register(@Query("userName") String userName, @Query("password") String password);
 
     @GET("getPregerence")
     Observable<PreferenceResult> getPreference(@Query("userName") String userName);
