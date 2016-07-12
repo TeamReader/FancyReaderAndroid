@@ -59,7 +59,7 @@ public class ReadView extends TextView {
 //        return getCharCountPerLine();
     }
 
-    public int getLargestLineCount() {
+    public int getLinePerPageInTv() {
 
         return  (int)Math.floor((getHeight()-getPaddingTop()-getPaddingBottom())/(getPaint().getFontSpacing()) );
     }

