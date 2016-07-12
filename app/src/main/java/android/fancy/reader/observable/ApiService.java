@@ -1,10 +1,10 @@
-package observable;
+package android.fancy.reader.observable;
 
 import android.fancy.reader.bean.Book;
 
-import observable.entity.PreferenceResult;
-import observable.entity.TBook;
-import observable.entity.TResult;
+import android.fancy.reader.observable.entity.PreferenceResult;
+import android.fancy.reader.observable.entity.TBook;
+import android.fancy.reader.observable.entity.TResult;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;

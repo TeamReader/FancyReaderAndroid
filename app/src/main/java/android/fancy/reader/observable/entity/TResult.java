@@ -1,4 +1,4 @@
-package observable.entity;
+package android.fancy.reader.observable.entity;
 
 /**
  * Created by inx95 on 16-7-10.

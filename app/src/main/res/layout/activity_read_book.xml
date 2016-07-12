@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<android.fancy.reader.activity.view.ReadView
+    android:layout_width="match_parent"
+    android:background="@android:color/darker_gray"
+    android:id="@+id/read_tv"
+    android:textSize="25px"
+    android:textColor="@android:color/background_dark"
+    android:text=""
+    android:layout_height="match_parent" />
+</LinearLayout>

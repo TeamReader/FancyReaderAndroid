@@ -15,7 +15,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import java.io.IOException;
 
-import observable.ApiService;
+import android.fancy.reader.observable.ApiService;
 
 import retrofit2.Converter;
 import  retrofit2.Retrofit;

@@ -1,7 +1,6 @@
-package observable;
+package android.fancy.reader.observable;
 
 
-import android.fancy.reader.FancyReaderApplication;
 import android.fancy.reader.bean.Book;
 import android.fancy.reader.tool.DataSource;
 

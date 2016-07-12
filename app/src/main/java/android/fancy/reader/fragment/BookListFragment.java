@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import observable.BookListFromSourceObservable;
+import android.fancy.reader.observable.BookListFromSourceObservable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

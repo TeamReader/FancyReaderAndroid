@@ -15,7 +15,7 @@ import android.support.design.widget.TabLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import observable.entity.TResult;
+import android.fancy.reader.observable.entity.TResult;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
