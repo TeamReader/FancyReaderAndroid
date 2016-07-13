@@ -17,9 +17,11 @@ public class CalculateLinesThread extends Thread {
     private File file;
     private final int linePerPageInTv;
     private final int charCountPerLine;
-    private int currentPage=0;
-    private int currentStartLine = 0;
-    private int continuanceLine = 0;
+    private int currentPage = 0;
+    private int startLine = 0;
+    private int currentLine = 0;
+    private int usedLinesShow = 0;
+    private int indexInStartLine = 0;
 
 
     public CalculateLinesThread(Map<Integer, ContentPerPage> pages, File file, int linePerPageInTv, int charCountPerLine) {
@@ -37,13 +39,12 @@ public class CalculateLinesThread extends Thread {
             InputStreamReader isr = new InputStreamReader(fis, charset);
             LineNumberReader lnr = new LineNumberReader(isr);
 
-            int usedLines = 0;
             String line;
             while ((line = lnr.readLine()) != null) {
-                usedLines = consumeLine(line,usedLines);
+                consumeLine(line);
+                currentLine++;
             }
-            pages.put(currentPage, new ContentPerPage(currentStartLine, continuanceLine));
-
+            pages.put(currentPage, new ContentPerPage(startLine, currentLine - startLine + 1, indexInStartLine));
             fis.close();
             isr.close();
             lnr.close();
@@ -52,19 +53,27 @@ public class CalculateLinesThread extends Thread {
         }
     }
 
-    private int consumeLine(String line,int usedLinesShow) {
-        int thisLineCountShowLine = (int)Math.ceil((double) line.length() / charCountPerLine);
-        if(thisLineCountShowLine==0) thisLineCountShowLine = 1;
-        if (usedLinesShow + thisLineCountShowLine <= linePerPageInTv) {
-            continuanceLine++;
+    private void consumeLine(String line) {
+        int thisLineCountShowLine = (int) Math.ceil((double) line.length() / charCountPerLine);
+        if (thisLineCountShowLine == 0) thisLineCountShowLine = 1; //\n情况
+        if (usedLinesShow + thisLineCountShowLine < linePerPageInTv) {
             usedLinesShow += thisLineCountShowLine;
+        } else if (usedLinesShow + thisLineCountShowLine == linePerPageInTv) {
+            generatePage();
+            startLine = currentLine + 1;
+            indexInStartLine = 0;
         } else {
-            pages.put(currentPage, new ContentPerPage(currentStartLine, continuanceLine));
-            currentPage++;
-            usedLinesShow = thisLineCountShowLine;
-            currentStartLine += continuanceLine;
-            continuanceLine = 0;
+            int needLineCount = linePerPageInTv - usedLinesShow;//尚需多少显示行完成一页
+            generatePage();
+            startLine = currentLine;
+            indexInStartLine = charCountPerLine * needLineCount;
+            consumeLine(line.substring(indexInStartLine));
         }
-        return usedLinesShow;
+    }
+
+    private void generatePage() {
+        pages.put(currentPage, new ContentPerPage(startLine, currentLine - startLine + 1, indexInStartLine));
+        currentPage++;
+        usedLinesShow = 0;
     }
 }

@@ -6,6 +6,22 @@ package android.fancy.reader.bean;
 public class ContentPerPage {
     private int startLine;
     private int continuanceLines;
+    private int indexInStartLine;
+
+    public ContentPerPage(int startLine, int continuanceLines, int indexInStartLine) {
+
+        this.startLine = startLine;
+        this.continuanceLines = continuanceLines;
+        this.indexInStartLine = indexInStartLine;
+    }
+
+    public int getIndexInStartLine() {
+        return indexInStartLine;
+    }
+
+    public void setIndexInStartLine(int indexInStartLine) {
+        this.indexInStartLine = indexInStartLine;
+    }
 
     public int getStartLine() {
         return startLine;
@@ -20,12 +36,6 @@ public class ContentPerPage {
     }
 
     public void setContinuanceLines(int continuanceLines) {
-        this.continuanceLines = continuanceLines;
-    }
-
-    public ContentPerPage(int startLine, int continuanceLines) {
-
-        this.startLine = startLine;
         this.continuanceLines = continuanceLines;
     }
 }

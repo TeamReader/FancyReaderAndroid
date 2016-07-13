@@ -21,15 +21,16 @@ import java.util.Map;
 /**
  * Created by inx95 on 16-7-12.
  */
-public class ReadBookActivity extends Activity{
+public class ReadBookActivity extends Activity {
     private ReadView mReadView;
-    private Map<Integer,ContentPerPage> pages = new HashMap<>();
-    private String test="shafdjklllllllllllllllllllllllllllllllh\\\\nsfjkafsdlf\\nn\\n\\nn\\n\\nn\\n\\n\\nn\\n\\n\\nn\\n\\n\\nn\\n\\n\\n\\hhhhhhhherwrhwfhsdtfwarbhfawfhewakjfahfearhawkerahwkpyheawew";
+    private Map<Integer, ContentPerPage> pages = new HashMap<>();
+    private String test = "shafdjklllllllllllllllllllllllllllllllh\\\\nsfjkafsdlf\\nn\\n\\nn\\n\\nn\\n\\n\\nn\\n\\n\\nn\\n\\n\\nn\\n\\n\\n\\hhhhhhhherwrhwfhsdtfwarbhfawfhewakjfahfearhawkerahwkpyheawew";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_book);
-        mReadView= (ReadView) findViewById(R.id.read_tv);
+        mReadView = (ReadView) findViewById(R.id.read_tv);
         mReadView.setTextSize(30);
         File file = new File("/sdcard/test.txt");
         boolean isExist = file.exists();
@@ -38,25 +39,31 @@ public class ReadBookActivity extends Activity{
             @Override
             public void run() {
                 new CalculateLinesThread(pages, file, mReadView.getLinePerPageInTv(), mReadView.getCharCountPerLine()).start();
-                setReadViewText(file);
+                setReadViewText(file, 1);
             }
         });
     }
 
-    private void setReadViewText(File file) {
-        BufferedReader reader=null;
-        FileInputStream fis=null;
-        InputStreamReader isr=null;
+    private void setReadViewText(File file, int pageNum) {
+        BufferedReader reader = null;
+        FileInputStream fis = null;
+        InputStreamReader isr = null;
         try {
             fis = new FileInputStream(file);
             isr = new InputStreamReader(fis);
-            reader= new BufferedReader(isr);
+            reader = new BufferedReader(isr);
             StringBuilder builder = new StringBuilder();
-            while (pages.get(0) == null) ;
-            int startLine =  pages.get(0).getStartLine();
-            int countLine = pages.get(0).getContinuanceLines();
-            while (startLine-->0) reader.readLine();
-            while (countLine-- > 0) {
+            while (pages.get(pageNum) == null) ;
+            ContentPerPage page = pages.get(pageNum);
+            int startLine = page.getStartLine();
+            int continuanceLine = page.getContinuanceLines();
+            //略过前面的行号
+            while (startLine-- > 0) reader.readLine();
+            //处理第一行和开始索引
+            builder.append(reader.readLine().substring(page.getIndexInStartLine()));
+            continuanceLine--;
+
+            while (continuanceLine-- > 0) {
                 builder.append(reader.readLine());
             }
             mReadView.setText(builder.toString());
@@ -66,9 +73,9 @@ public class ReadBookActivity extends Activity{
             e.printStackTrace();
         } finally {
             try {
-                if(reader!=null)reader.close();
-                if(fis!=null)fis.close();
-                if(isr!=null)isr.close();
+                if (reader != null) reader.close();
+                if (fis != null) fis.close();
+                if (isr != null) isr.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
