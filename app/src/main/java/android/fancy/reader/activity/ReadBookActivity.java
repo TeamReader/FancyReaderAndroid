@@ -21,10 +21,16 @@ import java.util.Map;
 /**
  * Created by inx95 on 16-7-12.
  */
-public class ReadBookActivity extends Activity {
+public class ReadBookActivity extends Activity implements ReadView.OnTurnPageListener {
     private ReadView mReadView;
+    private File mFile;
+    private int mCurrentPage;
     private Map<Integer, ContentPerPage> pages = new HashMap<>();
     private String test = "shafdjklllllllllllllllllllllllllllllllh\\\\nsfjkafsdlf\\nn\\n\\nn\\n\\nn\\n\\n\\nn\\n\\n\\nn\\n\\n\\nn\\n\\n\\n\\hhhhhhhherwrhwfhsdtfwarbhfawfhewakjfahfearhawkerahwkpyheawew";
+    BufferedReader reader = null;
+    FileInputStream fis = null;
+    InputStreamReader isr = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,26 +38,36 @@ public class ReadBookActivity extends Activity {
         setContentView(R.layout.activity_read_book);
         mReadView = (ReadView) findViewById(R.id.read_tv);
         mReadView.setTextSize(30);
-        File file = new File("/sdcard/test.txt");
-        boolean isExist = file.exists();
+        mFile = new File("/sdcard/test.txt");
+        initReader();
+        mCurrentPage = 0;
+        boolean isExist = mFile.exists();
         Toast.makeText(this, String.valueOf(isExist), Toast.LENGTH_LONG).show();
+        mReadView.setSlop(0f);
+        mReadView.setOnTurnPageListener(this);
         mReadView.post(new Runnable() {
             @Override
             public void run() {
-                new CalculateLinesThread(pages, file, mReadView.getLinePerPageInTv(), mReadView.getCharCountPerLine()).start();
-                setReadViewText(file, 1);
+                new CalculateLinesThread(pages, mFile, mReadView.getLinePerPageInTv(), mReadView.getCharCountPerLine()).start();
+                setReadViewText(mCurrentPage);
             }
         });
     }
 
-    private void setReadViewText(File file, int pageNum) {
-        BufferedReader reader = null;
-        FileInputStream fis = null;
-        InputStreamReader isr = null;
+    private void initReader() {
         try {
-            fis = new FileInputStream(file);
+            fis = new FileInputStream(mFile);
             isr = new InputStreamReader(fis);
             reader = new BufferedReader(isr);
+            reader.mark(2^10);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setReadViewText(int pageNum) {
+        try {
+            reader.reset();
             StringBuilder builder = new StringBuilder();
             while (pages.get(pageNum) == null) ;
             ContentPerPage page = pages.get(pageNum);
@@ -71,22 +87,35 @@ public class ReadBookActivity extends Activity {
             Snackbar.make(mReadView, "书籍不存在", Snackbar.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (reader != null) reader.close();
-                if (fis != null) fis.close();
-                if (isr != null) isr.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
     }
 
+    @Override
+    protected void onDestroy() {
+        try {
+            if (reader != null) reader.close();
+            if (fis != null) fis.close();
+            if (isr != null) isr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        super.onDestroy();
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public void turnRight() {
+        setReadViewText(mCurrentPage++);
+    }
+
+    @Override
+    public void turnLeft() {
+        setReadViewText(--mCurrentPage > 0 ? mCurrentPage : 0);
     }
 }

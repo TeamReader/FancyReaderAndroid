@@ -11,10 +11,11 @@ import android.widget.TextView;
  * Created by inx95 on 16-7-12.
  */
 public class ReadView extends TextView {
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
-    }
+
+    private float oldDownX = 0f;
+    private OnTurnPageListener turnPageListener = null;
+    private float slop = 25;//默认最小识别翻页距离
+
 
     public ReadView(Context context) {
         super(context);
@@ -38,11 +39,9 @@ public class ReadView extends TextView {
     }
 
     public int getCharCountForS(String s) {
-//        int a = ((int) (screenWidth / getTextSize()));
-//        return a;
         Rect bounds = new Rect();
         Paint paint = getPaint();
-        paint.getTextBounds(s, 0,s.length() , bounds);
+        paint.getTextBounds(s, 0, s.length(), bounds);
 
         int width = (int) Math.ceil((float) bounds.width() / paint.getTextSize());
         return width;
@@ -51,16 +50,57 @@ public class ReadView extends TextView {
     public int getCharCountPerLine() {
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         int b = ((int) getPaint().getTextSize());
-        return  (int)Math.floor(screenWidth / b);
+        return (int) Math.floor(screenWidth / b);
     }
-//获取为了显示s需要花费多少行
+
+    //获取为了显示s需要花费多少行
     public int getSCostLineShowCount(String s) {
-        return (int)Math.ceil((double) getCharCountForS(s) / getCharCountPerLine());
-//        return getCharCountPerLine();
+        return (int) Math.ceil((double) getCharCountForS(s) / getCharCountPerLine());
     }
+
 
     public int getLinePerPageInTv() {
 
-        return  (int)Math.floor((getHeight()-getPaddingTop()-getPaddingBottom())/(getPaint().getFontSpacing()) );
+        return (int) Math.floor((getHeight() - getPaddingTop() - getPaddingBottom()) / (getPaint().getFontSpacing()));
+    }
+
+    public void setOnTurnPageListener(OnTurnPageListener turnPageListener) {
+        this.turnPageListener = turnPageListener;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                oldDownX = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                float currentUpX = event.getX();
+                float distance = oldDownX - currentUpX;
+                if (Math.abs(distance) < slop || turnPageListener == null) {
+                    break;
+                }
+                if (distance < 0) {
+                    turnPageListener.turnLeft();
+                } else {
+                    turnPageListener.turnRight();
+                }
+                break;
+        }
+        return true;
+    }
+
+    public float getSlop() {
+        return slop;
+    }
+
+    public void setSlop(float slop) {
+        this.slop = slop;
+    }
+
+    public interface OnTurnPageListener {
+        void turnRight();
+
+        void turnLeft();
     }
 }
