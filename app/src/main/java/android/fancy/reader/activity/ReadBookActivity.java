@@ -26,7 +26,6 @@ public class ReadBookActivity extends Activity implements ReadView.OnTurnPageLis
     private File mFile;
     private int mCurrentPage;
     private Map<Integer, ContentPerPage> pages = new HashMap<>();
-    private String test = "shafdjklllllllllllllllllllllllllllllllh\\\\nsfjkafsdlf\\nn\\n\\nn\\n\\nn\\n\\n\\nn\\n\\n\\nn\\n\\n\\nn\\n\\n\\n\\hhhhhhhherwrhwfhsdtfwarbhfawfhewakjfahfearhawkerahwkpyheawew";
     BufferedReader reader = null;
     FileInputStream fis = null;
     InputStreamReader isr = null;
@@ -37,7 +36,7 @@ public class ReadBookActivity extends Activity implements ReadView.OnTurnPageLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_book);
         mReadView = (ReadView) findViewById(R.id.read_tv);
-        mReadView.setTextSize(30);
+        mReadView.setTextSize(15);
         mFile = new File("/sdcard/test.txt");
         initReader();
         mCurrentPage = 0;
@@ -45,12 +44,9 @@ public class ReadBookActivity extends Activity implements ReadView.OnTurnPageLis
         Toast.makeText(this, String.valueOf(isExist), Toast.LENGTH_LONG).show();
         mReadView.setSlop(0f);
         mReadView.setOnTurnPageListener(this);
-        mReadView.post(new Runnable() {
-            @Override
-            public void run() {
-                new CalculateLinesThread(pages, mFile, mReadView.getLinePerPageInTv(), mReadView.getCharCountPerLine()).start();
-                setReadViewText(mCurrentPage);
-            }
+        mReadView.post(() -> {
+            new CalculateLinesThread(pages, mFile, mReadView.getLinePerPageInTv(), mReadView.getCharCountPerLine()).start();
+            setReadViewText(mCurrentPage);
         });
     }
 
@@ -59,7 +55,7 @@ public class ReadBookActivity extends Activity implements ReadView.OnTurnPageLis
             fis = new FileInputStream(mFile);
             isr = new InputStreamReader(fis);
             reader = new BufferedReader(isr);
-            reader.mark(2^10);
+            reader.mark(Integer.MAX_VALUE);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,7 +76,7 @@ public class ReadBookActivity extends Activity implements ReadView.OnTurnPageLis
             continuanceLine--;
 
             while (continuanceLine-- > 0) {
-                builder.append(reader.readLine());
+                builder.append("\n" + reader.readLine());
             }
             mReadView.setText(builder.toString());
         } catch (FileNotFoundException e) {
@@ -88,7 +84,6 @@ public class ReadBookActivity extends Activity implements ReadView.OnTurnPageLis
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -111,11 +106,12 @@ public class ReadBookActivity extends Activity implements ReadView.OnTurnPageLis
 
     @Override
     public void turnRight() {
-        setReadViewText(mCurrentPage++);
+        setReadViewText(++mCurrentPage);
     }
 
     @Override
     public void turnLeft() {
-        setReadViewText(--mCurrentPage > 0 ? mCurrentPage : 0);
+        if (--mCurrentPage < 0) mCurrentPage = 0;
+        setReadViewText(mCurrentPage);
     }
 }
